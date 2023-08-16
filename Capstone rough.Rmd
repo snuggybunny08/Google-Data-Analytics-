@@ -1,0 +1,123 @@
+---
+title: "Data Analysis Capstone"
+author: "Emmanuel"
+date: "2023-08-12"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+dt <- read.csv("Data Analysis.csv",header = TRUE, stringsAsFactors = TRUE)
+dt
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r}
+str(dt)
+
+```
+```{r}
+summary(dt)
+```
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(here)
+library(skimr)
+library(Tmisc)
+library(lubridate)
+library(dplyr)
+```
+
+```{r}
+q2_2019 <- read_csv("Divvy_Trips_2019_Q2.csv")
+q2_2019
+
+q3_2019 <- read_csv("Divvy_Trips_2019_Q3.csv")
+q3_2019
+
+q4_2019 <- read.csv("Divvy_Trips_2019_Q4.csv")
+q4_2019
+
+q1_2020 <- read.csv("Divvy_Trips_2020_Q1.csv")
+q1_2020
+```
+
+```{r}
+colnames(q4_2019)
+colnames(q3_2019)
+colnames(q2_2019)
+colnames(q1_2020)
+```
+
+```{r}
+(q3_2019 <- rename(q3_2019,ride_id = trip_id,rideable_type = bikeid,started_at = start_time,ended_at = end_time,start_station_name = from_station_name,start_station_id = from_station_id,end_station_name = to_station_name,end_station_id = to_station_id,member_casual = usertype))
+```
+
+```{r}
+(q4_2019 <- rename(q4_2019,ride_id = trip_id,rideable_type = bikeid,started_at = start_time,ended_at = end_time,start_station_name = from_station_name,start_station_id = from_station_id,end_station_name = to_station_name,end_station_id = to_station_id,member_casual = usertype))
+```
+
+```{r}
+(q2_2019 <- rename(q2_2019,ride_id = "01 - Rental Details Rental ID",rideable_type = "01 - Rental Details Bike ID",started_at = "01 - Rental Details Local Start Time",ended_at = "01 - Rental Details Local End Time",start_station_name = "03 - Rental Start Station Name",start_station_id = "03 - Rental Start Station ID",end_station_name = "02 - Rental End Station Name",end_station_id = "02 - Rental End Station ID",member_casual = "User Type"))
+```
+
+```{r}
+str(q1_2020)
+str(q2_2019)
+str(q3_2019)
+str(q4_2019)
+```
+
+
+```{r}
+q4_2019 <- mutate(q4_2019,ride_id = as.character(ride_id), rideable_type = as.character(rideable_type))
+q3_2019 <- mutate(q3_2019,ride_id = as.character(ride_id), rideable_type = as.character(rideable_type))
+q2_2019 <- mutate(q2_2019,ride_id = as.character(ride_id), rideable_type = as.character(rideable_type))
+```
+
+
+
+```{r}
+q1_2020$started_at <- ymd_hms(q1_2020$started_at)
+q4_2019$started_at <- ymd_hms(q4_2019$started_at)
+q1_2020$ended_at <- ymd_hms(q1_2020$ended_at)
+q4_2019$ended_at <- ymd_hms(q4_2019$ended_at)
+```
+
+```{r}
+q1_2020
+q2_2019
+q3_2019
+q4_2019
+```
+
+
+```{r}
+all_trips <- bind_rows(q2_2019, q3_2019, q4_2019, q1_2020)
+```
+
+
+
+
+
+
+
+
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
